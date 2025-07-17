@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +73,8 @@ public class ControlAdapterListener extends AdapterListener {
                 Log.d(TAG, pkg + " request in progress, new request ignored");
             } else if (isConnected() || canConnect()) {
                 Log.d(TAG,  pkg + " starting update to (sr=" + rawRate + ", bd=" + rawDepth + ")");
+                // When value is -1 -> go to defaults (48000Hz + 16bit)
+                Toast.makeText(mContext, "Updating to " + (rawRate == -1 ? 48000 : rawRate) + "Hz, " + (rawDepth == -1 ? 16 : rawDepth) + " bit", Toast.LENGTH_SHORT).show();
                 mAsyncInProgress = true;
                 PlaybackState ps = mc.getPlaybackState();
                 stop(ps != null && ps.getPosition() < REWIND_THRESHOLD);
